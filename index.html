@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RanzyDevoloper - Nexor Ultimate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #070203;
+  --bg2: #120708;
+  --accent: #d11f2a;
+  --accent-light: #ff5d6a;
+  --accent-glow: rgba(209,31,42,0.30);
+  --accent-dim: #7d1018;
+  --green: #22c55e;
+  --cyan: #06b6d4;
+  --text: #f6eaea;
+  --text-dim: #927474;
+  --border: rgba(209,31,42,0.20);
+  --card-bg: rgba(28,8,10,0.86);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,0,0,0.035),
+    rgba(255,0,0,0.035) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+  animation: scanMove 6s linear infinite;
+}
+
+@keyframes scanMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(20px); }
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* LOADING */
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: radial-gradient(circle at center, #110407 0%, var(--bg) 55%, #040102 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: opacity 0.6s ease;
+}
+
+.load-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--accent-light);
+  text-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-dim);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.load-sub {
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.load-bar-wrap {
+  width: 220px;
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.load-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent-light), var(--cyan));
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--accent);
+  transition: width 0.1s linear;
+}
+
+.load-pct {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  color: var(--accent-light);
+  letter-spacing: 2px;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* LOGIN */
+#loginScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: linear-gradient(180deg, #070203 0%, #120708 100%);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 24px;
+}
+
+.login-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--accent-light);
+  text-shadow: 0 0 20px var(--accent);
+}
+
+.login-box {
+  width: 100%;
+  max-width: 280px;
+  background: rgba(28,8,10,0.90);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.login-input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(209,31,42,0.18);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  outline: none;
+  text-align: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+}
+
+.login-input::placeholder {
+  color: rgba(246,234,234,0.45);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 11px 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent-light));
+  color: white;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+#loginError {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #ff6b6b;
+  min-height: 16px;
+  text-align: center;
+}
+
+.login-hint {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* APP WRAPPER */
+#app {
+  display: none;
+  position: relative;
+  z-index: 1;
+  padding: 92px 16px 40px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* TOPBAR */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 480px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 10px;
+  background: linear-gradient(180deg, rgba(7,2,3,0.98), rgba(7,2,3,0.85));
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,45,45,0.2);
+}
+
+.user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-dim), var(--accent-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 16px;
+  color: white;
+  box-shadow: 0 0 16px var(--accent-glow);
+  flex-shrink: 0;
+}
+
+.user-info {
+  margin-left: 12px;
+  flex: 1;
+}
+
+.user-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent-light);
+}
+
+.user-role {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+.topbar-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.badge {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+
+.badge-tier {
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+.badge-online {
+  border-color: var(--green);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.badge-online::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: blink 2s ease infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.section-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--text-dim);
+  text-align: center;
+  margin: 18px 0 12px;
+  position: relative;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 22%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border));
+}
+
+.section-label::before { left: 0; }
+.section-label::after  { right: 0; background: linear-gradient(270deg, transparent, var(--border)); }
+
+/* LAUNCH GRID */
+.launch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.launch-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.launch-card:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.launch-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(209,31,42,0.14);
+  border: 1.5px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.launch-icon svg {
+  width: 26px;
+  height: 26px;
+  fill: var(--accent-light);
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+.launch-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--accent);
+  color: white;
+  font-family: 'Orbitron', monospace;
+  font-size: 7px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 6px;
+}
+
+.launch-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent-light);
+  text-align: center;
+}
+
+.launch-sub {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.launch-pkg {
+  font-size: 8px;
+  color: rgba(255,93,106,0.55);
+  font-family: monospace;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* CONFIG CARDS */
+.cfg-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 13px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.cfg-card.active-card {
+  border-color: rgba(209,31,42,0.54);
+  box-shadow: 0 0 14px rgba(209,31,42,0.14);
+}
+
+.cfg-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(209,31,42,0.25);
+  flex-shrink: 0;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.cfg-card.active-card .cfg-dot {
+  background: var(--accent-light);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.cfg-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(209,31,42,0.1);
+  border: 1px solid rgba(209,31,42,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent-light);
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cfg-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--accent-light);
+  fill: none;
+}
+
+.cfg-body {
+  flex: 1;
+}
+
+.cfg-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.cfg-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.cfg-tag {
+  font-family: 'Orbitron', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  color: var(--accent-light);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+/* TOGGLE */
+.toggle {
+  width: 44px;
+  height: 24px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.25s, box-shadow 0.25s;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  top: 2px;
+  left: 2px;
+  transition: transform 0.25s ease, background 0.25s;
+}
+
+.toggle.on {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  border-color: var(--accent);
+  animation: glowPulse 1.2s infinite;
+}
+
+.toggle.on::after {
+  transform: translateX(20px);
+  background: white;
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 5px rgba(255,0,0,0.3); }
+  50% { box-shadow: 0 0 18px rgba(255,0,0,0.6); }
+  100% { box-shadow: 0 0 5px rgba(255,0,0,0.3); }
+}
+
+/* TERMINAL */
+.terminal {
+  background: rgba(5,2,12,0.92);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 4px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.term-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.term-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.term-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.td-r { background: #ff5f57; }
+.td-y { background: #febc2e; }
+.td-g { background: #28c840; }
+
+.term-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}
+
+.term-status {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(209,31,42,0.3);
+  color: var(--accent-light);
+}
+
+.term-log {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: var(--accent-light);
+  line-height: 1.8;
+  min-height: 20px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.term-log span {
+  color: var(--text-dim);
+}
+
+/* INJECT PANEL */
+#injectPanel {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(12,4,5,0.97);
+  border-top: 1px solid var(--border);
+  border-radius: 22px 22px 0 0;
+  padding: 24px 24px 40px;
+  text-align: center;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  transition: bottom 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.inject-handle {
+  width: 36px;
+  height: 3px;
+  background: rgba(209,31,42,0.4);
+  border-radius: 10px;
+  margin: 0 auto 20px;
+}
+
+.inject-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent-light);
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px var(--accent);
+}
+
+.inject-ring-wrap {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 14px;
+}
+
+.inject-ring {
+  width: 90px;
+  height: 90px;
+  border: 3px solid rgba(209,31,42,0.15);
+  border-top: 3px solid var(--accent-light);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  position: absolute;
+  inset: 0;
+}
+
+.inject-ring2 {
+  width: 70px;
+  height: 70px;
+  border: 2px solid rgba(209,31,42,0.1);
+  border-bottom: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1.3s linear infinite reverse;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.inject-pct {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-light);
+  text-shadow: 0 0 20px var(--accent);
+}
+
+.inject-log {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+.inject-bar-wrap {
+  width: 100%;
+  height: 3px;
+  background: rgba(209,31,42,0.1);
+  border-radius: 10px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.inject-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent-light));
+  border-radius: 10px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--accent);
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div id="loading">
+  <div class="load-logo">Nexor Ultimate</div>
+  <div class="load-sub">System Initializing</div>
+  <div class="load-bar-wrap"><div class="load-bar" id="loadBar"></div></div>
+  <div class="load-pct" id="loadPct">0%</div>
+</div>
+
+<div id="loginScreen">
+  <div class="login-title">NEXOR LOGIN</div>
+  <div class="login-box">
+    <input id="loginUser" class="login-input" placeholder="Username" autocomplete="off">
+    <input id="loginPass" class="login-input" type="password" placeholder="Password" autocomplete="off">
+    <button class="login-btn" onclick="doLogin()">ENTER</button>
+    <div id="loginError"></div>
+    <div class="login-hint">Use Nexor / 1</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;min-width:0;">
+      <div class="user-avatar">N</div>
+      <div class="user-info">
+        <div class="user-name">RanzyCT.Devoloper</div>
+        <div class="user-role">Nexor Ultimate</div>
+      </div>
+    </div>
+    <div class="topbar-badges">
+      <div class="badge badge-tier">Nexor Max Ultimate</div>
+      <div class="badge badge-online" id="onlineBadge">ONLINE</div>
+    </div>
+  </div>
+
+  <div class="section-label">LAUNCH GAME</div>
+
+  <div class="launch-grid">
+    <div class="launch-card" onclick="launchGame('freefire')">
+      <div class="launch-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+        </svg>
+      </div>
+      <div class="launch-name">FREE FIRE</div>
+      <div class="launch-sub">OPEN GAME</div>
+      <div class="launch-pkg">com.garena.game.fof</div>
+    </div>
+
+    <div class="launch-card" onclick="launchGame('freefiremax')">
+      <div class="launch-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+        </svg>
+        <div class="launch-badge">MAX</div>
+      </div>
+      <div class="launch-name">FREE FIRE MAX</div>
+      <div class="launch-sub">OPEN GAME</div>
+      <div class="launch-pkg">com.garena.game.ffmax</div>
+    </div>
+  </div>
+
+  <div class="section-label">SYSTEM CONFIGURATION</div>
+
+  <div class="cfg-card" id="cfg0">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M3 6l9 6 9-6M3 12l9 6 9-6" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">EASY DRAG AIM</div>
+      <div class="cfg-desc">Optimize drag-shot sensitivity curve for fluid movement</div>
+    </div>
+    <div class="cfg-tag">DRAG</div>
+    <div class="toggle" onclick="toggleSwitch(this,0)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg1">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">MAX SENSIVITY</div>
+      <div class="cfg-desc">Fine-tune all general sensitivity with precision profiles</div>
+    </div>
+    <div class="cfg-tag">SENS</div>
+    <div class="toggle" onclick="toggleSwitch(this,1)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg2">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="4" x2="12" y2="9" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">HEADLOCK 78%</div>
+      <div class="cfg-desc">For aim tracking to head player</div>
+    </div>
+    <div class="cfg-tag">HEAD</div>
+    <div class="toggle" onclick="toggleSwitch(this,2)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg3">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M2 12c0-5.5 10-10 10-10s10 4.5 10 10-10 10-10 10S2 17.5 2 12z" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">HEADTRACKING EXTREAM</div>
+      <div class="cfg-desc">Adjust aim tracking curve & follow speed for moving target alignment</div>
+    </div>
+    <div class="cfg-tag">TRACK</div>
+    <div class="toggle" onclick="toggleSwitch(this,3)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg4">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><path d="M7 12h2M15 12h2M12 7v2M12 15v2" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">CROSSHAIR ADJUST STABLE</div>
+      <div class="cfg-desc">Set crosshair anchor point & convergence offset for consistent placement</div>
+    </div>
+    <div class="cfg-tag">AIM</div>
+    <div class="toggle" onclick="toggleSwitch(this,4)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg5">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M5 12.5C5 8.36 8.13 5 12 5s7 3.36 7 7.5M12 5V2M8 6.5L6 4.5M16 6.5l2-2" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">FIX RECOIL 72%</div>
+      <div class="cfg-desc">Reduce aim movement while moving and firing together</div>
+    </div>
+    <div class="cfg-tag">REC</div>
+    <div class="toggle" onclick="toggleSwitch(this,5)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg6">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M1 6l6 6-6 6M23 6l-6 6 6 6" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">NETWORK BOOST</div>
+      <div class="cfg-desc">Stabilize connection & reduce ping spikes while playing</div>
+    </div>
+    <div class="cfg-tag">NET</div>
+    <div class="toggle" onclick="toggleSwitch(this,6)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg7">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">OPTIMIZED PHONE</div>
+      <div class="cfg-desc">Boost device performance & clear background processes</div>
+    </div>
+    <div class="cfg-tag">OPT</div>
+    <div class="toggle" onclick="toggleSwitch(this,7)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg8">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 12h16M12 4v16" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">IMPOVE AIM</div>
+      <div class="cfg-desc">Improve touch response and reduce input delay for cleaner control</div>
+    </div>
+    <div class="cfg-tag">HACK</div>
+    <div class="toggle" onclick="toggleSwitch(this,8)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg9">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3 8-7 9-4-1-7-4-7-9V7l7-4z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">BYPASS PROTECTION MODE</div>
+      <div class="cfg-desc">System safety profile to keep settings stable and consistent</div>
+    </div>
+    <div class="cfg-tag">SAFE</div>
+    <div class="toggle" onclick="toggleSwitch(this,9)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg10">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 15c2-5 6-8 8-8s6 3 8 8" stroke-linecap="round"/><path d="M7 14c1.4-3 3.3-5 5-5s3.6 2 5 5" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">TOUCH BOOST</div>
+      <div class="cfg-desc">Maximize screen input response for smoother control feedback</div>
+    </div>
+    <div class="cfg-tag">TOUCH</div>
+    <div class="toggle" onclick="toggleSwitch(this,10)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg11">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 13h5l2-6 3 12 2-6h4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">FPS BOOSTER</div>
+      <div class="cfg-desc">Reduce background load and improve frame stability</div>
+    </div>
+    <div class="cfg-tag">FPS</div>
+    <div class="toggle" onclick="toggleSwitch(this,11)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg12">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">
+      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M5 19c4-8 10-10 14-14" stroke-linecap="round"/><path d="M15 5h4v4" stroke-linecap="round"/></svg>
+    </div>
+    <div class="cfg-body">
+      <div class="cfg-name">SENS CURVE V2</div>
+      <div class="cfg-desc">Adjust the movement curve for more predictable input flow</div>
+    </div>
+    <div class="cfg-tag">CURVE</div>
+    <div class="toggle" onclick="toggleSwitch(this,12)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg13">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">⚡</div>
+    <div class="cfg-body">
+      <div class="cfg-name">SMOOTH AIM</div>
+      <div class="cfg-desc">Enhance aiming transition for smoother tracking behavior</div>
+    </div>
+    <div class="cfg-tag">AIM+</div>
+    <div class="toggle" onclick="toggleSwitch(this,13)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg14">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">🎯</div>
+    <div class="cfg-body">
+      <div class="cfg-name">HEADSHOOT CURVE V2</div>
+      <div class="cfg-desc">Advanced targeting curve for optimized head alignment</div>
+    </div>
+    <div class="cfg-tag">HS V2</div>
+    <div class="toggle" onclick="toggleSwitch(this,14)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg15">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">📱</div>
+    <div class="cfg-body">
+      <div class="cfg-name">MAX RESPONSIVE TOUCH</div>
+      <div class="cfg-desc">Ultra low latency touch response for instant control</div>
+    </div>
+    <div class="cfg-tag">TOUCH+</div>
+    <div class="toggle" onclick="toggleSwitch(this,15)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg16">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">🚀</div>
+    <div class="cfg-body">
+      <div class="cfg-name">CLEANER ALL CACHE</div>
+      <div class="cfg-desc">Clear residual cache for better performance</div>
+    </div>
+    <div class="cfg-tag">CLR</div>
+    <div class="toggle" onclick="toggleSwitch(this,16)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg17">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">⚙️</div>
+    <div class="cfg-body">
+      <div class="cfg-name">TWEAKS CONFIG</div>
+      <div class="cfg-desc">Apply internal configuration tuning for stability</div>
+    </div>
+    <div class="cfg-tag">CFG</div>
+    <div class="toggle" onclick="toggleSwitch(this,17)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg18">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">🎯</div>
+    <div class="cfg-body">
+      <div class="cfg-name">ASSIST HEAD</div>
+      <div class="cfg-desc">Assist alignment towards upper target area</div>
+    </div>
+    <div class="cfg-tag">HEAD+</div>
+    <div class="toggle" onclick="toggleSwitch(this,18)"></div>
+  </div>
+
+  <div class="cfg-card" id="cfg19">
+    <div class="cfg-dot"></div>
+    <div class="cfg-icon">🎮</div>
+    <div class="cfg-body">
+      <div class="cfg-name">AIMHEAD SETTINGS</div>
+      <div class="cfg-desc">Custom adjustment for targeting precision behavior</div>
+    </div>
+    <div class="cfg-tag">ADV</div>
+    <div class="toggle" onclick="toggleSwitch(this,19)"></div>
+  </div>
+
+  <div class="section-label">Nexor Terminal Tools</div>
+
+  <div class="terminal">
+    <div class="term-header">
+      <div class="term-dots">
+        <div class="term-dot td-r"></div>
+        <div class="term-dot td-y"></div>
+        <div class="term-dot td-g"></div>
+      </div>
+      <div class="term-label">PROCESS MONITOR</div>
+      <div class="term-status" id="termStatus">IDLE</div>
+    </div>
+    <div class="term-log" id="termLog">
+      <span>> </span>RanzyCT Devoloper Nexor<br>
+      <span>> </span>System ready.
+    </div>
+  </div>
+</div>
+
+<div id="injectPanel">
+  <div class="inject-handle"></div>
+  <div class="inject-title" id="injectTitle">INITIALIZING MODULE</div>
+  <div class="inject-ring-wrap">
+    <div class="inject-ring"></div>
+    <div class="inject-ring2"></div>
+  </div>
+  <div class="inject-pct" id="injectPct">0%</div>
+  <div class="inject-log" id="injectLog">Starting...</div>
+  <div class="inject-bar-wrap">
+    <div class="inject-bar" id="injectBar"></div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const pts = Array.from({length: 72}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  r: Math.random() * 1.2 + 0.35,
+  dx: (Math.random() - 0.5) * 0.45,
+  dy: (Math.random() - 0.5) * 0.45
+}));
+
+function drawBg() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  pts.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,45,45,0.35)';
+    ctx.fill();
+
+    p.x += p.dx;
+    p.y += p.dy;
+
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+  });
+
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x;
+      const dy = pts[i].y - pts[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 110) {
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = 'rgba(255,45,45,' + (1 - dist / 110) * 0.22 + ')';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+/* AUDIO */
+let audioCtx = null;
+let audioUnlocked = false;
+
+function unlockAudio() {
+  if (audioUnlocked) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    audioUnlocked = true;
+  } catch (e) {}
+}
+
+function playSound(type) {
+  try {
+    unlockAudio();
+    if (!audioCtx) return;
+
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+
+    o.connect(g);
+    g.connect(audioCtx.destination);
+
+    let freq = 700;
+    let duration = 0.08;
+    let gainValue = 0.05;
+
+    if (type === 'click') {
+      freq = 850;
+      duration = 0.05;
+      gainValue = 0.035;
+    } else if (type === 'success') {
+      freq = 1200;
+      duration = 0.14;
+      gainValue = 0.05;
+    } else if (type === 'error') {
+      freq = 280;
+      duration = 0.16;
+      gainValue = 0.05;
+    } else if (type === 'launch') {
+      freq = 620;
+      duration = 0.12;
+      gainValue = 0.05;
+    } else if (type === 'ready') {
+      freq = 1000;
+      duration = 0.1;
+      gainValue = 0.04;
+    }
+
+    o.type = 'sine';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(gainValue, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+    o.start();
+    o.stop(audioCtx.currentTime + duration);
+  } catch (e) {}
+}
+
+document.addEventListener('pointerdown', unlockAudio, { once: true });
+
+/* LOADING */
+let lp = 0;
+const loadBar = document.getElementById('loadBar');
+const loadPct = document.getElementById('loadPct');
+const loadingEl = document.getElementById('loading');
+const loginEl = document.getElementById('loginScreen');
+const appEl = document.getElementById('app');
+
+const loadTimer = setInterval(() => {
+  lp += Math.random() * 3 + 1;
+  if (lp >= 100) {
+    lp = 100;
+    clearInterval(loadTimer);
+  }
+
+  loadBar.style.width = lp + '%';
+  loadPct.textContent = Math.floor(lp) + '%';
+
+  if (lp >= 100) {
+    setTimeout(() => {
+      loadingEl.style.opacity = '0';
+      setTimeout(() => {
+        loadingEl.style.display = 'none';
+        playSound('ready');
+        loginEl.style.display = 'flex';
+      }, 600);
+    }, 300);
+  }
+}, 40);
+
+/* LOGIN */
+const loginUser = document.getElementById('loginUser');
+const loginPass = document.getElementById('loginPass');
+const loginError = document.getElementById('loginError');
+
+function doLogin() {
+  const u = loginUser.value.trim();
+  const p = loginPass.value.trim();
+
+  if (u === 'Nexor' && p === '1') {
+    loginError.textContent = '';
+    playSound('success');
+    loginEl.style.display = 'none';
+    appEl.style.display = 'block';
+  } else {
+    loginError.textContent = 'Wrong username or password';
+    playSound('error');
+  }
+}
+
+loginPass.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') doLogin();
+});
+loginUser.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') doLogin();
+});
+
+/* TERMINAL */
+const termLog = document.getElementById('termLog');
+const termStatus = document.getElementById('termStatus');
+
+function logToTerminal(msg) {
+  const line = document.createElement('div');
+  const text = '> ' + msg;
+  let i = 0;
+
+  function typing() {
+    if (i < text.length) {
+      line.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, 12);
+    }
+  }
+
+  termLog.appendChild(line);
+  typing();
+  termLog.scrollTop = termLog.scrollHeight;
+}
+
+/* INJECT / INITIALIZING PANEL */
+const injectPanel = document.getElementById('injectPanel');
+const injectTitle = document.getElementById('injectTitle');
+const injectPct = document.getElementById('injectPct');
+const injectLog = document.getElementById('injectLog');
+const injectBar = document.getElementById('injectBar');
+
+function showInitializing(titleText, doneMessage, onDone) {
+  injectTitle.textContent = titleText;
+  injectPct.textContent = '0%'
+  injectLog.textContent = 'Starting...';
+  injectBar.style.width = '0%';
+  injectPanel.style.bottom = '0';
+
+  let pct = 0;
+  const logs = [
+    'Initializing module...',
+    'Applying parameters...',
+    'Syncing configuration...',
+    'Finalizing process...'
+  ];
+  let logIndex = 0;
+
+  termStatus.textContent = 'INITIALIZING';
+
+  const timer = setInterval(() => {
+    pct += Math.random() * 7 + 2;
+    if (pct > 100) pct = 100;
+
+    injectPct.textContent = Math.floor(pct) + '%';
+    injectBar.style.width = pct + '%';
+    injectLog.textContent = logs[logIndex];
+
+    if (pct > (logIndex + 1) * 25 && logIndex < logs.length - 1) {
+      logIndex++;
+    }
+
+    if (pct >= 100) {
+      clearInterval(timer);
+      playSound('success');
+      injectLog.textContent = doneMessage || 'Completed.';
+      setTimeout(() => {
+        injectPanel.style.bottom = '-100%';
+        termStatus.textContent = 'ACTIVE';
+        if (typeof onDone === 'function') onDone();
+      }, 850);
+    }
+  }, 120);
+}
+
+/* TOGGLE */
+function toggleSwitch(el, idx) {
+  el.classList.toggle('on');
+  const on = el.classList.contains('on');
+  playSound('click');
+
+  const card = document.getElementById('cfg' + idx);
+  card.classList.toggle('active-card', on);
+
+  const name = card.querySelector('.cfg-name').textContent;
+
+  if (on) {
+    logToTerminal('[ON] ' + name);
+    showInitializing(name + ' INIT', name + ' initialized.', () => {});
+  } else {
+    logToTerminal('[OFF] ' + name);
+    termStatus.textContent = 'IDLE';
+  }
+}
+
+/* LAUNCH */
+function launchGame(game) {
+  playSound('launch');
+
+  const isMax = game === 'freefiremax';
+  const title = isMax ? 'FREE FIRE MAX' : 'FREE FIRE';
+
+  const schemes = [
+    'freefire://',
+    'garena://launch?app=fof',
+    'https://ff.garena.com/'
+  ];
+
+  injectTitle.textContent = title + ' CONNECTING';
+  injectPanel.style.bottom = '0';
+
+  termStatus.textContent = 'ACTIVE';
+
+  logToTerminal('[BOOT] Nexor Engine Start');
+  logToTerminal('[TARGET] ' + title);
+
+  let pct = 0;
+  const pctEl = document.getElementById('injectPct');
+  const logEl = document.getElementById('injectLog');
+  const barEl = document.getElementById('injectBar');
+
+  const logs = [
+    'Starting system...',
+    'Preparing interface...',
+    'Syncing modules...',
+    'Launching...'
+  ];
+
+  let logIndex = 0;
+
+  const timer = setInterval(() => {
+    pct += Math.random() * 6 + 2;
+    if (pct > 100) pct = 100;
+
+    pctEl.textContent = Math.floor(pct) + '%';
+    barEl.style.width = pct + '%';
+    logEl.textContent = logs[logIndex];
+
+    if (pct > (logIndex + 1) * 25 && logIndex < logs.length - 1) {
+      logIndex++;
+    }
+
+    if (pct >= 100) {
+      clearInterval(timer);
+      playSound('success');
+      logToTerminal('[SUCCESS] System Ready');
+      termStatus.textContent = 'LAUNCHING';
+
+      setTimeout(() => {
+        let step = 0;
+
+        function tryLaunch() {
+          if (step >= schemes.length) {
+            playSound('error');
+            logToTerminal('[ERROR] Launch Failed');
+            termStatus.textContent = 'FAILED';
+            injectPanel.style.bottom = '-100%';
+            return;
+          }
+
+          const current = schemes[step];
+          logToTerminal('[TRY] ' + current);
+
+          try {
+            window.location.href = current;
+          } catch (e) {}
+
+          step++;
+          setTimeout(tryLaunch, 1500);
+        }
+
+        tryLaunch();
+
+        setTimeout(() => {
+          injectPanel.style.bottom = '-100%';
+          termStatus.textContent = 'IDLE';
+        }, 5000);
+      }, 500);
+    }
+  }, 90);
+}
+</script>
+
+</body>
+</html>
